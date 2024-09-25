@@ -1,0 +1,44 @@
+conda activate ete3
+cd /mnt/c/SkimmingLoci_reduced/4_coal_sims
+
+
+### simulate gene trees, 
+### summarize triplet frequency distribution, 
+### and map unbalanced triplets to the species tree
+### You need to run the simulations manually 
+
+./simulator_tripletCounter_tripletMapper.sh speciestree.tre speciestree_geneboot.tre genetrees.tre
+
+## nao usei essas arvores simuladas, servem para acessar a significancia do introgression index, mas demora muito pra rodar
+
+### gene tree variation
+
+iqtree -t speciestree.tre --gcf genetrees.tre --prefix concord 
+
+### site cf
+
+iqtree -t speciestree.tre --gcf genetrees.tre -s concatenate.phy --scf 1000 --prefix concord2
+
+iqtree -t speciestree.tre -s concatenate.phy --scfl 1000 --prefix concord2
+
+### gene tree estimation error
+
+## first generate 100 alignments based on species tree, 
+### run 4script 4b_caol_sims_prepare_seq-gen,
+### thren run script 4c_coal_sims_seqgen_raxml.R
+
+raxmlHPC -f b -t speciestree.tre -z sim_gene.trees -m GTRGAMMA -n ERR
+
+### ILS (tetha)
+
+raxml-ng --evaluate --msa concatenate.phy --model GTR+G --tree speciestree.tre --brlen scaled
+
+## format the data into a matrix
+
+
+### saturation
+
+### run script 4e_coal_sims_get_node_saturation.R
+
+
+### run ralaimpo.R

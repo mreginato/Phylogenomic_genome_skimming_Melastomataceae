@@ -1,0 +1,1 @@
+python ~/bin/quartetsampling/quartet_sampling.py --tree speciestree_geneboot_rooted.tre --align concatenate.phy --reps 100 --threads 4 --lnlike 2 --result-prefix qs_astral --genetrees concatenate_map.txt --engine raxml-ng --engine-exec raxml-ng 
